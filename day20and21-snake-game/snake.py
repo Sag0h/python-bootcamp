@@ -21,6 +21,11 @@ class Snake():
             self.parts[i].pu()
             self.parts[i].goto(STARTING_POSITIONS[i])
 
+    def grow(self):
+        self.parts.append(Turtle("square"))
+        self.parts[len(self.parts)-1].fillcolor("white")
+        self.parts[len(self.parts)-1].pu()
+        self.parts[len(self.parts)-1].goto(self.parts[len(self.parts)-1].pos())
 
     def move(self):
         for i in range(len(self.parts)-1, 0, -1):
