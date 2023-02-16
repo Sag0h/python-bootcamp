@@ -3,7 +3,7 @@ import os
 
 ALIGNMENT = "center"
 FONT = ("Courier", 24, "normal")
-FILE_PATH = os.getcwd()+"\highscore.txt"
+FILE_PATH = r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day20-21-24-snake-game\highscore.txt"
     
 
 class ScoreBoard(Turtle):
