@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
-
+import json
 from random import randint, choice, shuffle
 import pyperclip
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -27,34 +27,72 @@ def gen_password():
     password_entry.insert(0, password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def save_json_file(new_data):
+    try:
+        with open(r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-30-password-manager-project\data.json", mode="r") as data_file: 
+            data = json.load(data_file)
+            data.update(new_data)
+    except FileNotFoundError:
+        data = new_data
+    finally:
+        with open(r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-30-password-manager-project\data.json", mode="w") as data_file: 
+            json.dump(data, data_file, indent=4)
+
+def empty_fields(email, password, website):
+    return len(email) == 0 or len(password) == 0 or len(website) == 0
 
 def save():
-    if len(user_entry.get()) == 0 or len(password_entry.get()) == 0 or len(website_entry.get()) == 0:
+    website = website_entry.get().title()
+    password = password_entry.get()
+    email = user_entry.get()
+    new_data = {website:{"username/email":email, "password":password}} 
+
+    if empty_fields(email, password, website):
         messagebox.showerror(title="Oops!", message="Please don't leave any fields empty!")
     else:
-        if messagebox.askokcancel(title=website_entry.get(), message=f"These are the details entered: \nEmail/Username: {user_entry.get()} " f"\nPassword: {password_entry.get()} \nIs it ok to save?"):
-            with open(r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-password-manager-project\data.txt", mode="a") as data: 
-                data.write(f'{website_entry.get().title()} | {user_entry.get()} | {password_entry.get()}\n')
-                data.close()
-            pyperclip.copy(password_entry.get())
+        if messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail/Username: {email} " f"\nPassword: {password} \nIs it ok to save?"):
+            save_json_file(new_data)
+            pyperclip.copy(password)
             messagebox.showinfo(title="Success!", message="The password was copied to the clipboard.")
             password_entry.delete(0, END)
             website_entry.delete(0, END)
+
+
+# ---------------------------- SEARCH DATA ------------------------------- #
+
+def search_website(website):
+    data = {}
+    try:
+        with open(r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-30-password-manager-project\data.json", mode="r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        pass
+    else:
+        if website in data:
+            userdata = data[website]["username/email"]
+            password = data[website]["password"]
+            pyperclip.copy(password)
+            messagebox.showinfo(title=website.title(), message=f"Email/Username: {userdata} \nPassword: {password}\nThe password was copied to the clipboard")
+        else:
+            messagebox.showerror(title="Error.", message=f"No details for ' {website} ' exists.")
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50, pady=50, bg="white")
 canvas = Canvas(width=200, height=200, bg="white", highlightthickness=0)
-logo = PhotoImage(file=r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-password-manager-project\logo.png")
+logo = PhotoImage(file=r"C:\Users\mique\OneDrive\Escritorio\python-bootcamp\day29-30-password-manager-project\logo.png")
 canvas.create_image(100, 100, image=logo)
 canvas.grid(row=0,column=1)
 
 website_lb = Label(text="Website:", bg="white")
 website_lb.grid(row=1, column=0)
-website_entry = Entry(width=42)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=24)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
+
+search_button = Button(text="Search", width=14, command= lambda: search_website(website_entry.get().title()))
+search_button.grid(row=1, column=2)
 
 user_lb = Label(text="Email/Username:", bg="white")
 user_lb.grid(row=2, column=0)
