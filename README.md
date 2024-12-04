@@ -1,0 +1,1 @@
+I skip some days because I feel like I'm not learning anything new, so I decided to move on to intermediate+ and hard days.
