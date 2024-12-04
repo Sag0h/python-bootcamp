@@ -1,0 +1,61 @@
+# Ignorar los entornos virtuales de Python
+venv/
+.env/
+*.env
+
+# Archivos de caché de Python
+__pycache__/
+*.py[cod]
+
+# Archivos de configuración específicos del entorno
+*.env
+*.ini
+*.cfg
+
+# Archivos generados por herramientas de desarrollo
+*.mypy_cache/
+*.pytest_cache/
+.tox/
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Archivos creados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de logs
+*.log
+
+# Ignorar bases de datos locales
+*.sqlite3
+*.db
+
+# Archivos creados por editores o IDEs
+.vscode/
+.idea/
+*.swp
+*~
+
+# Archivos de paquetes y distribuciones
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Ignorar claves privadas o archivos de configuración sensibles
+*.key
+*.crt
+*.pem
+*.p12
+
+# Archivos creados por Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Ignorar archivos y carpetas temporales
+tmp/
+temp/
+*.bak
+*.old
+*.tmp
