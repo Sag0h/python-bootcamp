@@ -3,6 +3,10 @@ name: Day 35 - Mike Daily Assistant
 on:
   workflow_dispatch:
 
+  schedule:
+  # 10:00 UTC = 07:00 Argentina
+  - cron: "0 10 * * *"
+  
 jobs:
   daily-brief:
     runs-on: ubuntu-latest
